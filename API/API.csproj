@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infra.IoC\Infra.IoC.csproj" />
-    <ProjectReference Include="..\Infra.Security\Infra.Security.csproj" />
     <ProjectReference Include="..\Infra.Utils\Infra.Utils.csproj" />
   </ItemGroup>
 
