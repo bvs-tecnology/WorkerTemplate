@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Hangfire;
-using Hangfire.Console;
-using Hangfire.Redis.StackExchange;
+using Application.Services;
 using Infra.Data;
 using Infra.Utils.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +16,7 @@ namespace Infra.IoC
         public static void AddLocalServices(this IServiceCollection services, IConfiguration configuration)
         {
             #region Services
+            services.AddScoped<ITestService, TestService>();
             #endregion
 
             #region Repositories
@@ -32,14 +31,6 @@ namespace Infra.IoC
 
         public static void AddLocalCache(this IServiceCollection services, IConfiguration configuration) {
             services.AddStackExchangeRedisCache(options => options.Configuration = Builders.BuildRedisConnectionString(configuration));
-        }
-
-        public static void AddLocalHangfire(this IServiceCollection services, IConfiguration configuration) {
-            services.AddHangfire(options => {
-                options.UseRedisStorage(Builders.BuildRedisConnectionString(configuration), new RedisStorageOptions { Prefix = "HANGFIRE" });
-                options.UseConsole();
-            });
-            services.AddHangfireServer();
         }
 
         public static void AddLocalHealthChecks(this IServiceCollection services, IConfiguration configuration)

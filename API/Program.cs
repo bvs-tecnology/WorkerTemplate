@@ -1,3 +1,5 @@
+using API.Configurations;
+using API.Jobs;
 using API.Middlewares;
 using Hangfire;
 using HealthChecks.UI.Client;
@@ -14,6 +16,7 @@ builder.Services.AddLocalServices(builder.Configuration);
 builder.Services.AddLocalHttpClients(builder.Configuration);
 builder.Services.AddLocalUnitOfWork(builder.Configuration);
 builder.Services.AddLocalCache(builder.Configuration);
+builder.Services.AddLocalRabbitMQ(builder.Configuration);
 builder.Services.AddLocalHangfire(builder.Configuration);
 builder.Services.AddLocalHealthChecks(builder.Configuration);
 #endregion
@@ -23,6 +26,7 @@ builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfigura
 var app = builder.Build();
 
 app.UseHangfireDashboard();
+MapJobs.MapTestJobs();
 
 app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
