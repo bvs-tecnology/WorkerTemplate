@@ -1,51 +1,38 @@
 using API.Configurations;
 using API.Jobs;
-using API.Middlewares;
 using Hangfire;
 using HealthChecks.UI.Client;
 using Infra.IoC;
+using Infra.Security;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var apiName = "Template API";
-
-#region Local Injections
-builder.Services.AddLocalServices(builder.Configuration);
-builder.Services.AddLocalHttpClients(builder.Configuration);
-builder.Services.AddLocalUnitOfWork(builder.Configuration);
-builder.Services.AddLocalCache(builder.Configuration);
-builder.Services.AddLocalRabbitMQ(builder.Configuration);
-builder.Services.AddLocalHangfire(builder.Configuration);
-builder.Services.AddLocalHealthChecks(builder.Configuration);
+#region Injections
+builder.Services
+    .AddOpenTemeletryConfiguration(builder.Configuration)
+    .AddLocalServices(builder.Configuration)
+    .AddLocalHttpClients(builder.Configuration)
+    .AddLocalUnitOfWork(builder.Configuration)
+    .AddLocalCache(builder.Configuration)
+    .AddLocalRabbitMQ(builder.Configuration)
+    .AddLocalHangfire(builder.Configuration)
+    .AddLocalHealthChecks(builder.Configuration)
+    .AddKeycloakAuthentication(builder.Configuration)
+    .AddLocalCors()
+    .AddOptions();
+builder.Logging
+    .AddOpenTelemetryConfiguration(builder.Configuration);
 #endregion
-
-builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
 var app = builder.Build();
 
+#region Middlewares
+app.UseLocalCors(builder.Environment);
 app.UseHangfireDashboard();
 MapJobs.MapTestJobs();
-
 app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
-
-#region Middlewares
-app.UseMiddleware<RedisCacheMiddleware>();
 #endregion
 
-try
-{
-    Log.Information($"[{apiName}] Starting the worker...");
-    app.Run();
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, $"[{apiName}] Worker failed to start");
-}
-finally
-{
-    Log.Information($"[{apiName}] Finishing the worker...");
-    Log.CloseAndFlush();
-}
+app.Run();
 
