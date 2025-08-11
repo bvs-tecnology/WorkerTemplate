@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Infra.Security;
 
 public static class CorsInjector
 {
-    public static void AddLocalCors(this IServiceCollection services)
+    public static IServiceCollection AddLocalCors(this IServiceCollection services)
     {
         services.AddCors(options =>
         {
@@ -22,5 +25,11 @@ public static class CorsInjector
                     .AllowAnyMethod();
             });
         });
+        return services;
+    }
+
+    public static void UseLocalCors(this IApplicationBuilder app, IWebHostEnvironment environment)
+    {
+        app.UseCors(environment.IsDevelopment() ? "AllowAll" : "AllowSpecificOrigin");
     }
 }

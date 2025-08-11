@@ -5,7 +5,7 @@ namespace API.Configurations
 {
     public static class RabbitMQConfigurator
     {
-        public static void AddLocalRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddLocalRabbitMQ(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMassTransit(busConfigurator =>
             {
@@ -20,10 +20,13 @@ namespace API.Configurations
                         h.Username(configuration["MessageBroker:Username"]!);
                         h.Password(configuration["MessageBroker:Password"]!);
                     });
+                    cfg.UseInstrumentation();
                     cfg.ConfigureEndpoints(context);
                     cfg.UseRawJsonSerializer();
                 });
             });
+
+            return services;
         }
     }
 }
