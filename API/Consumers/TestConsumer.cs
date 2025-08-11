@@ -3,13 +3,13 @@ using MassTransit;
 
 namespace API.Consumers
 {
-    public sealed class TestConsumer : IConsumer<UserDto>
+    public sealed class TestConsumer(ILogger<TestConsumer> logger) : IConsumer<TestConsumerDto>
     {
-        public async Task Consume(ConsumeContext<UserDto> context)
+        public async Task Consume(ConsumeContext<TestConsumerDto> context)
         {
-            var message = context.Message;
-            await Task.Delay(2000);
-            Console.WriteLine($"Received: {message.Id}");
+            logger.LogInformation("Consuming TestConsumerDto {id}", context.Message.Id);
+            await Task.Delay(500);
+            logger.LogInformation("TestConsumerDto {id} Consumed", context.Message.Id);
         }
     }
 }
