@@ -7,7 +7,7 @@ namespace Application.Services
         public async Task Test()
         {
             logger.LogInformation("Starting Test Job");
-            Console.WriteLine("Test from RecurringJob");
+            await Task.Delay(1000);
             logger.LogInformation("Finish Test Job");
         }
     }

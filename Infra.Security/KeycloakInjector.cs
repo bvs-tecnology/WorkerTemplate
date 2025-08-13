@@ -8,7 +8,7 @@ namespace Infra.Security;
 
 public static class KeycloakInjector
 {
-    public static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddLocalAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<Keycloak>(configuration.GetSection("Keycloak"));
         services.AddAuthentication("Bearer")
