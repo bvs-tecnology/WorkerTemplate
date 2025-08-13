@@ -1,4 +1,4 @@
-using API.Configurations;
+using API.Configurators;
 using API.Jobs;
 using Hangfire;
 using HealthChecks.UI.Client;
@@ -10,15 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Injections
 builder.Services
-    .AddOpenTemeletryConfiguration(builder.Configuration)
+    .AddOpenTelemetryConfiguration(builder.Configuration)
     .AddLocalServices(builder.Configuration)
     .AddLocalHttpClients(builder.Configuration)
     .AddLocalUnitOfWork(builder.Configuration)
     .AddLocalCache(builder.Configuration)
-    .AddLocalRabbitMQ(builder.Configuration)
+    .AddLocalMassTransit(builder.Configuration)
     .AddLocalHangfire(builder.Configuration)
     .AddLocalHealthChecks(builder.Configuration)
-    .AddKeycloakAuthentication(builder.Configuration)
+    .AddLocalAuthentication(builder.Configuration)
     .AddLocalCors()
     .AddOptions();
 builder.Logging

@@ -6,7 +6,7 @@ using Hangfire.Redis.StackExchange;
 using Hangfire.Server;
 using Infra.Utils.Configuration;
 
-namespace API.Configurations
+namespace API.Configurators
 {
     public static class HangfireConfigurator
     {
