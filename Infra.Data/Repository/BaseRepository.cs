@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using Domain;
+using Domain.Interfaces.Repositories;
+using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repository
 {
     [ExcludeFromCodeCoverage]
-    public class BaseRepository<TEntity>(IUnitOfWork unitOfWork) : IBaseRepository<TEntity> where TEntity : class
+    internal class BaseRepository<TEntity>(IUnitOfWork unitOfWork) : IBaseRepository<TEntity> where TEntity : class
     {
         public IQueryable<TEntity> GetAll() => unitOfWork.Context.Set<TEntity>().AsQueryable();
 

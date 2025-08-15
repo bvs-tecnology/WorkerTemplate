@@ -11,6 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
     <PackageReference Include="Grafana.OpenTelemetry" Version="1.3.0" />
     <PackageReference Include="Hangfire" Version="1.8.17" />
@@ -37,7 +39,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infra.IoC\Infra.IoC.csproj" />
-    <ProjectReference Include="..\Infra.Security\Infra.Security.csproj" />
     <ProjectReference Include="..\Infra.Utils\Infra.Utils.csproj" />
   </ItemGroup>
 

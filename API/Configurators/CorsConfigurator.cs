@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿namespace API.Configurators;
 
-namespace Infra.Security;
-
-public static class CorsInjector
+public static class CorsConfigurator
 {
     public static IServiceCollection AddLocalCors(this IServiceCollection services)
     {

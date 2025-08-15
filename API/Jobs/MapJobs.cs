@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Domain.Interfaces.Services;
 using Hangfire;
 
 namespace API.Jobs

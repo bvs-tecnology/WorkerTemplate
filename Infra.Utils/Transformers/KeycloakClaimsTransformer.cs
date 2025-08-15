@@ -4,7 +4,7 @@ using Infra.Utils.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
-namespace Infra.Security.Helpers;
+namespace Infra.Utils.Transformers;
 
 public class KeycloakClaimsTransformer(IOptionsSnapshot<Keycloak> keycloak) : IClaimsTransformation
 {

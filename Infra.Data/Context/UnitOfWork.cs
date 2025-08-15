@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Infra.Data
+namespace Infra.Data.Context
 {
     [ExcludeFromCodeCoverage]
-    public class UnitOfWork(Context context) : IUnitOfWork, IDisposable
+    public class UnitOfWork(Data.Context.Context context) : IUnitOfWork, IDisposable
     {
-        public Context Context { get; set; } = context;
+        public Data.Context.Context Context { get; set; } = context;
 
         public void SaveChanges()
         {

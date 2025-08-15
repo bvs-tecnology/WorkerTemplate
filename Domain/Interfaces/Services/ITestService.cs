@@ -1,4 +1,4 @@
-﻿namespace Application.Services
+﻿namespace Domain.Interfaces.Services
 {
     public interface ITestService
     {

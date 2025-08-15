@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Domain.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services
 {
-    public class TestService(ILogger<TestService> logger) : ITestService
+    internal class TestService(ILogger<TestService> logger) : ITestService
     {
         public async Task Test()
         {
