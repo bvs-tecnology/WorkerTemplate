@@ -11,6 +11,7 @@ jobs:
     runs-on:
       - self-hosted
       - windows
+    environment: ${{ github.base_ref == 'main' && 'PRD' || 'DEV' }}
 
     steps:
       - uses: actions/checkout@v4
