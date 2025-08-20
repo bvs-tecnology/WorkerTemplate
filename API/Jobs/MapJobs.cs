@@ -1,23 +1,23 @@
-﻿using Application.Services;
+﻿using System.Diagnostics.CodeAnalysis;
+using Domain.Interfaces.Services;
 using Hangfire;
 
-namespace API.Jobs
+namespace API.Jobs;
+[ExcludeFromCodeCoverage]
+public static class MapJobs
 {
-    public static class MapJobs
+    private static RecurringJobOptions _options => new()
     {
-        private static RecurringJobOptions _options => new()
-        {
-            TimeZone = TimeZoneInfo.Utc,
-            MisfireHandling = MisfireHandlingMode.Relaxed
-        };
-        public static void MapTestJobs()
-        {
-            RecurringJob.AddOrUpdate<ITestService>(
-                recurringJobId: "test",
-                methodCall: job => job.Test(),
-                cronExpression: Cron.Minutely,
-                options: _options
-            );
-        }
+        TimeZone = TimeZoneInfo.Utc,
+        MisfireHandling = MisfireHandlingMode.Relaxed
+    };
+    public static void MapTestJobs()
+    {
+        RecurringJob.AddOrUpdate<ITestService>(
+            recurringJobId: "test",
+            methodCall: job => job.Test(),
+            cronExpression: Cron.Daily,
+            options: _options
+        );
     }
 }

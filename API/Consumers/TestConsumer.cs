@@ -7,9 +7,9 @@ namespace API.Consumers
     {
         public async Task Consume(ConsumeContext<TestConsumerDto> context)
         {
-            logger.LogInformation("Consuming TestConsumerDto {id}", context.Message.Id);
+            logger.LogInformation("Consuming TestConsumerDto {Id}", context.Message.Id);
             await Task.Delay(500);
-            logger.LogInformation("TestConsumerDto {id} Consumed", context.Message.Id);
+            logger.LogInformation("TestConsumerDto {Id} Consumed", context.Message.Id);
         }
     }
 }
