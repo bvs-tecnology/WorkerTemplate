@@ -1,31 +1,17 @@
 ﻿using System.Linq.Expressions;
+using Domain.Entities;
 
-namespace Domain.Interfaces.Repositories
+namespace Domain.Interfaces.Repositories;
+public interface IBaseRepository<T> where T : BaseEntity
 {
-    public interface IBaseRepository<TEntity> where TEntity : class
-    {
-        IQueryable<TEntity> GetAll();
-
-        IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> expression);
-        Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
-        Task<IEnumerable<TEntity>> GetNoTrackingAsync(Expression<Func<TEntity, bool>> expression);
-
-        Task<TEntity?> GetByIDAsync(Guid id);
-
-        Task InsertWithSaveChangesAsync(TEntity entity);
-
-        Task InsertAsync(TEntity entity);
-
-        Task DeleteAsync(Guid id);
-
-        Task DeleteAsync(TEntity entity);
-
-        Task UpdateWithSaveChangesAsync(TEntity entity);
-
-        void Update(TEntity entity);
-
-        Task SaveChangesAsync();
-
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
-    }
+    IQueryable<T> GetAll();
+    IQueryable<T> Get(Expression<Func<T, bool>> predicate);
+    Task<List<T>> GetAsync(Expression<Func<T, bool>> predicate);
+    Task<T> GetAsync(Guid id);
+    Task<List<T>> GetNoTrackingAsync(Expression<Func<T, bool>> predicate);
+    Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+    Task SaveChangesAsync();
+    Task<T> InsertAsync(T entity);
+    Task DeleteAsync(Guid id);
+    Task DeleteAsync(T entity);
 }

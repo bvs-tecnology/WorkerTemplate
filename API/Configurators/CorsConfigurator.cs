@@ -1,5 +1,7 @@
-﻿namespace API.Configurators;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace API.Configurators;
+[ExcludeFromCodeCoverage]
 public static class CorsConfigurator
 {
     public static IServiceCollection AddLocalCors(this IServiceCollection services)

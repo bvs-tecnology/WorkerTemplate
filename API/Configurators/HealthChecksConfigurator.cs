@@ -1,7 +1,8 @@
-﻿using Infra.Utils.Configuration;
+﻿using System.Diagnostics.CodeAnalysis;
+using Infra.Utils.Configuration;
 
 namespace API.Configurators;
-
+[ExcludeFromCodeCoverage]
 public static class HealthChecksConfigurator
 {
     public static IServiceCollection AddLocalHealthChecks(this IServiceCollection services, IConfiguration configuration)

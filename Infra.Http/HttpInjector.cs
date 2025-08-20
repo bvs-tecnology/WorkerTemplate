@@ -5,13 +5,13 @@ namespace Infra.Http;
 
 public static class HttpInjector
 {
-    public static IServiceCollection InjectHttp(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection InjectHttp(this IServiceCollection services)
     {
-        services.InjectCrossCutting(configuration);
+        services.InjectCrossCutting();
         return services;
     }
     
-    private static IServiceCollection InjectCrossCutting(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection InjectCrossCutting(this IServiceCollection services)
     {
         return services;
     }

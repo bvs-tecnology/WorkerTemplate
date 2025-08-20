@@ -1,9 +1,8 @@
-﻿namespace Infra.Data.Context
+﻿namespace Infra.Data.Context;
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        Data.Context.Context Context { get; }
-        void SaveChanges();
-        Task SaveChangesAsync();
-    }
+    protected Context Context { get; }
+    Context GetContext();
+    void SaveChanges();
+    Task SaveChangesAsync();
 }

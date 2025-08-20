@@ -1,9 +1,10 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using Infra.Utils.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Configurators;
-
+[ExcludeFromCodeCoverage]
 public static class KeycloakConfigurator
 {
     public static IServiceCollection AddKeycloakAuthentication(this IServiceCollection services, IConfiguration configuration)
