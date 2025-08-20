@@ -30,5 +30,5 @@ MapJobs.MapTestJobs();
 app.MapHealthChecks("health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 #endregion
 
-app.Run();
+await app.RunAsync();
 

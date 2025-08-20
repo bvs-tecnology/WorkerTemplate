@@ -7,8 +7,8 @@ public class TestConsumerDiff(ILogger<TestConsumerDiff> logger) : IConsumer<Test
 {
     public async Task Consume(ConsumeContext<TestConsumerDto> context)
     {
-        logger.LogInformation("ConsumingDiff TestConsumerDto {id}", context.Message.Id);
+        logger.LogInformation("ConsumingDiff TestConsumerDto {Id}", context.Message.Id);
         await Task.Delay(1000);
-        logger.LogInformation("TestConsumerDto {id} ConsumedDiff", context.Message.Id);
+        logger.LogInformation("TestConsumerDto {Id} ConsumedDiff", context.Message.Id);
     }
 }

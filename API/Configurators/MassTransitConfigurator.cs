@@ -24,8 +24,6 @@ public static class MassTransitConfigurator
                     h.Password(configuration["MessageBroker:Password"]!);
                 });
                 cfg.UseInstrumentation();
-                
-                // cfg.ConfigureEndpoints(context);
                 cfg.ReceiveEndpoint("test-queue", e =>
                 {
                     e.Bind<TestConsumerDto>();
