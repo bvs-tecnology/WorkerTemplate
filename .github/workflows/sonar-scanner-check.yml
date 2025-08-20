@@ -1,0 +1,45 @@
+name: SonarQube scan check
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+
+jobs:  
+  sonar:
+    runs-on:
+      - self-hosted
+      - windows
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Setup SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Setup .Net Coverage
+        run: dotnet tool install --global dotnet-coverage
+
+      - name: SonarQube Scan
+        shell: cmd
+        run: |
+          set PATH=%PATH%;%USERPROFILE%\.dotnet\tools
+
+          dotnet sonarscanner begin ^
+            /k:"${{ vars.SONAR_API_KEY }}" ^
+            /d:sonar.host.url="${{ vars.SONAR_HOST_URL }}" ^
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" ^
+            /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
+
+          dotnet build --no-incremental
+          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
