@@ -22,12 +22,12 @@ COPY ["Infra.Utils/Infra.Utils.csproj", "Infra.Utils/"]
 RUN dotnet restore "./API/API.csproj"
 COPY . .
 WORKDIR "/src/API"
-RUN dotnet build "./API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./API.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 # Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./API.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 # Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
 FROM base AS final

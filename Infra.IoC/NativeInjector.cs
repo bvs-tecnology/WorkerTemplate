@@ -14,7 +14,7 @@ namespace Infra.IoC
         {
             services
                 .InjectData(configuration)
-                .InjectHttp(configuration)
+                .InjectHttp()
                 .InjectApplication();
             
             return services;

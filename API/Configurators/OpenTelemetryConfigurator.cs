@@ -1,11 +1,12 @@
-﻿using Npgsql;
+﻿using System.Diagnostics.CodeAnalysis;
+using Npgsql;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace API.Configurators;
-
+[ExcludeFromCodeCoverage]
 public static class OpenTelemetryConfigurator
 {
     public static IServiceCollection AddOpenTelemetryConfiguration(this IServiceCollection services, IConfiguration configuration)

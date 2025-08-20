@@ -1,37 +1,35 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Infra.Data.Context
+namespace Infra.Data.Context;
+[ExcludeFromCodeCoverage]
+public class UnitOfWork(Context context) : IUnitOfWork, IDisposable
 {
-    [ExcludeFromCodeCoverage]
-    public class UnitOfWork(Data.Context.Context context) : IUnitOfWork, IDisposable
+    public Context Context { get; } = context;
+
+    public Context GetContext() => Context;
+    public void SaveChanges()
     {
-        public Data.Context.Context Context { get; set; } = context;
+        Context.SaveChanges();
+    }
+    public async Task SaveChangesAsync()
+    {
+        await Context.SaveChangesAsync();
+    }
 
-        public void SaveChanges()
-        {
-            Context.SaveChanges();
-        }
-        public async Task SaveChangesAsync()
-        {
-            await Context.SaveChangesAsync();
-        }
+    private bool _disposed = false;
 
-        private bool _disposed = false;
-
-        protected virtual void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this._disposed && disposing)
         {
-            if (!this._disposed && disposing)
-            {
-                Context.Dispose();
-            }
-            this._disposed = true;
+            Context.Dispose();
         }
+        this._disposed = true;
+    }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }
-
