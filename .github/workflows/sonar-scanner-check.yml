@@ -6,11 +6,10 @@ on:
       - development
       - main
 
-jobs:  
+jobs:
   sonar:
     runs-on:
       - self-hosted
-      - windows
     environment: ${{ github.base_ref == 'main' && 'PRD' || 'DEV' }}
 
     steps:
@@ -23,24 +22,34 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Setup SonarScanner
-        run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Setup .Net Coverage
+      - name: Install dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
 
-      - name: SonarQube Scan
-        shell: cmd
+      - name: Add .NET tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Build & Test with Coverage
         run: |
-          set PATH=%PATH%;%USERPROFILE%\.dotnet\tools
-
-          dotnet sonarscanner begin ^
-            /k:"${{ vars.SONAR_API_KEY }}" ^
-            /d:sonar.host.url="${{ vars.SONAR_HOST_URL }}" ^
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" ^
-            /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
-
           dotnet build --no-incremental
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 
-          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=${{ vars.SONAR_API_KEY }}
+            -Dsonar.projectName=${{ vars.SONAR_API_KEY }}
+            -Dsonar.sources=.
+            -Dsonar.language=cs
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.cs.vscoveragexml.reportsPaths="coverage.xml"
+
+      - name: SonarQube Quality Gate Check
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
